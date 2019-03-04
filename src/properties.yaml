@@ -1,0 +1,18 @@
+---
+#停用词表路径
+stop_word_file_path: 百度停用词表.txt
+
+#文章路径
+file_path: file.txt
+
+#词云形状：有'circle', 'cardioid', 'diamond', 'triangle-forward','triangle', 'pentagon', 'star'可选。
+shape: circle
+
+#单词间隔
+word_gap: 20
+
+#字体大小范围
+word_size_range: [12, 60]
+
+#旋转单词角度
+rotate_step: 45
