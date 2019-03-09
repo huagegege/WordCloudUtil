@@ -5,14 +5,13 @@ from pkuseg import pkuseg
 from pyecharts import WordCloud
 
 
-class WordCloudUtil:
+class Generater:
     properties_file = "./properties.yaml"
 
     def __init__(self) -> None:
         self.analyzer = pkuseg()
         self.load_properties()
         self.load_stop_word()
-        self.load()
 
     def load_properties(self):
         with open(self.properties_file, encoding='utf-8') as file:
@@ -28,12 +27,7 @@ class WordCloudUtil:
         with open(self.stop_word_file_path, encoding='utf-8') as file:
             self.stop_word = file.read()
 
-    def load(self):
-        global content
-        with open(self.file_path, encoding='utf-8') as file:
-            content = file.read()
-
-    def generate(self):
+    def generate(self, name, content):
 
         words = self.analyzer.cut(content)
 
@@ -42,7 +36,6 @@ class WordCloudUtil:
             if word not in self.stop_word:
                 final_word.append(word)
 
-        name = 'file'
         attr = []
         val = []
         counter = Counter(final_word).most_common(100)
@@ -50,12 +43,7 @@ class WordCloudUtil:
             attr.append(count[0])
             val.append(count[1])
 
-        wordcloud = WordCloud()
-        wordcloud.add(name, attr, val, shape=self.shape, word_gap=self.word_gap, word_size_range=self.word_size_range,
-                      rotate_step=self.rotate_step)
-        wordcloud.render()
-
-
-if __name__ == '__main__':
-    wordcloudutil = WordCloudUtil()
-    wordcloudutil.generate()
+        word_cloud = WordCloud()
+        word_cloud.add(name, attr, val, shape=self.shape, word_gap=self.word_gap, word_size_range=self.word_size_range,
+                       rotate_step=self.rotate_step)
+        word_cloud.render()
