@@ -1,6 +1,6 @@
 ---
 #停用词表路径
-stop_word_file_path: 百度停用词表.txt
+stop_word_file_path: /resources/百度停用词表.txt
 
 #文章路径
 file_path: file.txt
