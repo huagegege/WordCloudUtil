@@ -23,7 +23,7 @@ PyMySQL==0.9.3
 pyparsing==2.3.1
 pyquery==1.4.0
 python-dateutil==2.8.0
-PyYAML==3.13
+PyYAML ~> 4.2b1
 six==1.12.0
 urllib3==1.24.1
 wordcloud==1.5.0

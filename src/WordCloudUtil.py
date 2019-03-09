@@ -1,8 +1,8 @@
-from FileLoader import FileLoader
-from Generator import Generater
+from Generator import Generator
+from Loader import UrlLoader
 
-generator = Generater()
-file_loader = FileLoader()
+generator = Generator()
+loader = UrlLoader("https://blog.csdn.net/on_my_way20xx/article/details/83114095")
 
-content = file_loader.getContent()
+content = loader.getContent()
 generator.generate('name', content)
