@@ -49,4 +49,8 @@ class Generator:
         word_cloud = WordCloud()
         word_cloud.add(name, attr, val, shape=self.shape, word_gap=self.word_gap, word_size_range=self.word_size_range,
                        rotate_step=self.rotate_step)
-        word_cloud.render()
+        word_cloud.render(path=self.work_dir+"/bin/render.html")
+
+    def generateFromArr(self, name, array):
+        content = str(array)
+        self.generate(name, content)

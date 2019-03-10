@@ -1,14 +1,9 @@
-from lxml.html import HtmlElement
 from pyquery import PyQuery
 from selenium import webdriver
-from bs4 import BeautifulSoup, Tag
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.keys import Keys
+from bs4 import BeautifulSoup
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
-from WYMusic import WYMusic
 
 
 class WYMusicCrawler:
@@ -49,33 +44,37 @@ class WYMusicCrawler:
 
         for comment_ele in comment_eles:
             comment = comment_ele.find(class_='cnt').text
-            comments.append(comment)
-
-        for comment in comments:
-            print(comment)
+            comments.append(comment.split())
         return comments
 
-    def turunPage(self, url):
-        driver.get(url)
-        driver.switch_to.frame('contentFrame')
-        crawler.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.m-cmmt')))
+    def turunPage(self, url, max_page=20):
+        comments = []
+        self.driver.get(url)
+        self.driver.switch_to.frame('contentFrame')
+        self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.m-cmmt')))
         switch = True
+        cur_page = 1
         while switch:
-            html = driver.page_source
-            self.getComment(html)
-            nxt_btn = driver.find_element_by_class_name('znxt')
+            html = self.driver.page_source
+            comments.append(self.getComment(html))
+            nxt_btn = self.driver.find_element_by_class_name('znxt')
             if 'js-disabled' in nxt_btn.get_attribute('class'):
                 switch = False
+            elif cur_page > max_page:
+                switch = False
             else:
-                driver.execute_script("window.scrollTo(100, document.body.scrollHeight);")
+                self.driver.execute_script("window.scrollTo(100, document.body.scrollHeight);")
                 nxt_btn.click()
-                crawler.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.m-cmmt .cnt')))
+                cur_page += 1
+                self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.m-cmmt .cnt')))
+        return comments
 
 
-crawler = WYMusicCrawler()
-musics = crawler.searchMusic('追梦赤子心')
-url = musics.pop().url
-driver = crawler.driver
-driver.get(url)
-driver.switch_to.frame('contentFrame')
-crawler.turunPage(url)
+class WYMusic:
+
+    def __init__(self, name, url, author, album='', time='') -> None:
+        self.name = name
+        self.url = url
+        self.author = author
+        self.time = time
+        self.album = album

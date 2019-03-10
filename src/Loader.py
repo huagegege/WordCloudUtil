@@ -1,5 +1,5 @@
 import requests
-from pyquery import PyQuery
+from bs4 import BeautifulSoup
 
 
 class Loader:
@@ -21,5 +21,11 @@ class UrlLoader(Loader):
         global content
         response = requests.get(url)
         text = response.text
-        doc = PyQuery(text)
-        content = doc.text()
+        doc = BeautifulSoup(text, features='html.parser')
+        for d in doc('head'):
+            d.extract()
+        for d in doc('meta'):
+            d.extract()
+        for d in doc('script'):
+            d.extract()
+        content = doc.text
