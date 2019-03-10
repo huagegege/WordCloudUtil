@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+workdir=$(cd `dirname $0`; pwd)
+PATH="$PATH:$workdir"
+
+
 while [[ -n "$1" ]]
 do
   case "$1" in
@@ -21,8 +25,6 @@ done
 if [ ! -n "$pagesize" ]; then pagesize=20
 
 fi
-
-echo $pagesize
 
 cd `dirname $0`
 python3 ../src/WYWordCloudUtil.py --keyword=$keyword --pagesize=$pagesize
